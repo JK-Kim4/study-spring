@@ -19,7 +19,7 @@ class Post (
     val password: String,
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = [CascadeType.DETACH])
-    @JoinColumn(name = "user_id")
-    val user: User? = null
+    @JoinColumn(name = "member_id")
+    val member: Member? = null
 
 ): BaseTimeEntity() {}
