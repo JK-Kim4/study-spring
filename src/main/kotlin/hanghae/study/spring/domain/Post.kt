@@ -18,6 +18,9 @@ class Post (
     @Column(length = 16)
     val password: String,
 
+    @Column(length = 20)
+    val authorName: String,
+
     @ManyToOne(fetch = FetchType.LAZY, cascade = [CascadeType.DETACH])
     @JoinColumn(name = "member_id")
     val member: Member? = null

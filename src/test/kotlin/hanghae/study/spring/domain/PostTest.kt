@@ -9,9 +9,10 @@ class PostTest {
     fun post_create_test(){
         val title = "test title"
         val content = "test content"
+        val authorName = "test author"
         val password = "test password"
 
-        val post = Post(title = title, content = content, password = password)
+        val post = Post(title = title, content = content, password = password, authorName = authorName)
 
         assertThat(post.title).isEqualTo(title)
         assertThat(post.content).isEqualTo(content)
