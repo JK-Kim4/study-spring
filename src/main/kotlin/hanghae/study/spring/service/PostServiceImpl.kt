@@ -6,7 +6,9 @@ import hanghae.study.spring.domain.Post
 import hanghae.study.spring.repository.PostJpaRepository
 import lombok.RequiredArgsConstructor
 import org.springframework.data.repository.findByIdOrNull
+import org.springframework.stereotype.Service
 
+@Service
 @RequiredArgsConstructor
 class PostServiceImpl(private val postRepository: PostJpaRepository) : PostService {
 

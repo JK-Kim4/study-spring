@@ -5,8 +5,7 @@ import hanghae.study.spring.api.dto.PostUpdateDto
 import hanghae.study.spring.domain.Post
 import org.springframework.stereotype.Service
 
-@Service
- interface PostService {
+interface PostService {
 
     fun findPostList(): List<Post>
 
