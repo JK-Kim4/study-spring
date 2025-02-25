@@ -1,29 +1,40 @@
 package hanghae.study.spring.service
 
+import hanghae.study.spring.api.dto.PostSaveDto
+import hanghae.study.spring.api.dto.PostUpdateDto
 import hanghae.study.spring.domain.Post
 import hanghae.study.spring.repository.PostJpaRepository
 import lombok.RequiredArgsConstructor
+import org.springframework.data.repository.findByIdOrNull
 
 @RequiredArgsConstructor
 class PostServiceImpl(private val postRepository: PostJpaRepository) : PostService {
 
     override fun findPostList(): List<Post> {
-        TODO("Not yet implemented")
+        return postRepository.findAll()
+    }
+
+    override fun findPostListOrderByIdDesc(): List<Post> {
+        return postRepository.findByOrderByIdDesc()
     }
 
     override fun findPostById(id: Long): Post? {
-        TODO("Not yet implemented")
+        return postRepository.findByIdOrNull(id)
     }
 
-    override fun save(post: Post): Post {
-        TODO("Not yet implemented")
+    override fun save(postSaveDto: PostSaveDto): Post {
+        return postRepository.save(postSaveDto.toPost())
     }
 
-    override fun update(id: Long, post: Post): Post {
-        TODO("Not yet implemented")
+    override fun update(id: Long, postUpdateDto: PostUpdateDto): Post? {
+        val post = findPostById(id)
+
+        if(post?.password == postUpdateDto.password) post.update(postUpdateDto)
+
+        return post
     }
 
     override fun deleteById(id: Long) {
-        TODO("Not yet implemented")
+        postRepository.deleteById(id)
     }
 }

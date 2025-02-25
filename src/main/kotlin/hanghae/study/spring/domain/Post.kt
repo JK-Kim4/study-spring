@@ -1,5 +1,6 @@
 package hanghae.study.spring.domain
 
+import hanghae.study.spring.api.dto.PostUpdateDto
 import jakarta.persistence.*
 import lombok.ToString
 
@@ -12,21 +13,27 @@ class Post (
     val id: Long? = null,
 
     @Column(length = 120)
-    val title: String,
+    var title: String,
 
     @Column(columnDefinition = "TEXT")
-    val content: String,
+    var content: String,
 
     @Column(length = 16)
     val password: String,
 
     @Column(length = 20)
-    val authorName: String,
+    var authorName: String,
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = [CascadeType.DETACH])
     @JoinColumn(name = "member_id")
-    val member: Member? = null
+    var member: Member? = null
 
 ): BaseTimeEntity() {
+
+    fun update(postUpdateDto: PostUpdateDto) {
+        this.title = postUpdateDto.title
+        this.content = postUpdateDto.content
+        this.authorName = postUpdateDto.authorName
+    }
 
 }

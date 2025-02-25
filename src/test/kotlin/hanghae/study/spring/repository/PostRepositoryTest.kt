@@ -23,5 +23,7 @@ class PostRepositoryTest {
 
         val savePost = postJpaRepository?.save(post)
         Assertions.assertThat(post.title).isEqualTo(savePost?.title)
+        Assertions.assertThat(post.id).isNotNull()
+        Assertions.assertThat(post.id).isEqualTo(savePost?.id!!)
     }
 }
