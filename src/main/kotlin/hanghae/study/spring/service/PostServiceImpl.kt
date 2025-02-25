@@ -5,7 +5,6 @@ import hanghae.study.spring.api.dto.PostUpdateDto
 import hanghae.study.spring.domain.Post
 import hanghae.study.spring.repository.PostJpaRepository
 import lombok.RequiredArgsConstructor
-import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 
 @Service
@@ -21,7 +20,7 @@ class PostServiceImpl(private val postRepository: PostJpaRepository) : PostServi
     }
 
     override fun findPostById(id: Long): Post? {
-        return postRepository.findByIdOrNull(id)
+        return postRepository.findById(id).orElseThrow()
     }
 
     override fun save(postSaveDto: PostSaveDto): Post {
@@ -29,9 +28,9 @@ class PostServiceImpl(private val postRepository: PostJpaRepository) : PostServi
     }
 
     override fun update(id: Long, postUpdateDto: PostUpdateDto): Post? {
-        val post = findPostById(id)
+        val post = postRepository.findByIdAndPassword(id, postUpdateDto.password).orElseThrow();
 
-        if(post?.password == postUpdateDto.password) post.update(postUpdateDto)
+        post.update(postUpdateDto)
 
         return post
     }
