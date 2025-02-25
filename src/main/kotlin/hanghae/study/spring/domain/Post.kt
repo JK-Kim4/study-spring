@@ -1,8 +1,10 @@
 package hanghae.study.spring.domain
 
 import jakarta.persistence.*
+import lombok.ToString
 
 @Entity
+@ToString
 class Post (
 
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
@@ -25,4 +27,6 @@ class Post (
     @JoinColumn(name = "member_id")
     val member: Member? = null
 
-): BaseTimeEntity() {}
+): BaseTimeEntity() {
+
+}
