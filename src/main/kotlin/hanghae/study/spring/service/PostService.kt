@@ -1,21 +1,22 @@
 package hanghae.study.spring.service
 
+import hanghae.study.spring.api.dto.PostDetailResponseDto
+import hanghae.study.spring.api.dto.PostListResponseDto
 import hanghae.study.spring.api.dto.PostSaveDto
 import hanghae.study.spring.api.dto.PostUpdateDto
-import hanghae.study.spring.domain.Post
-import org.springframework.stereotype.Service
+
 
 interface PostService {
 
-    fun findPostList(): List<Post>
+    fun findPostList(): List<PostListResponseDto>
 
-    fun findPostListOrderByIdDesc(): List<Post>
+    fun findPostListOrderByIdDesc(): List<PostListResponseDto>
 
-    fun findPostById(id: Long): Post?
+    fun findPostById(id: Long): PostDetailResponseDto?
 
-    fun save(postSaveDto: PostSaveDto): Post
+    fun save(postSaveDto: PostSaveDto): PostDetailResponseDto?
 
-    fun update(id: Long, postUpdateDto: PostUpdateDto): Post?
+    fun update(id: Long, postUpdateDto: PostUpdateDto): PostDetailResponseDto?
 
     fun deleteById(id: Long)
 
