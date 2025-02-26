@@ -18,6 +18,6 @@ interface PostService {
 
     fun update(id: Long, postUpdateDto: PostUpdateDto): PostDetailResponseDto?
 
-    fun deleteById(id: Long)
+    fun deleteById(id: Long): String?
 
 }

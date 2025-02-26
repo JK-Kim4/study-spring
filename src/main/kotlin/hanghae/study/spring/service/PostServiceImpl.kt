@@ -47,7 +47,9 @@ class PostServiceImpl(private val postRepository: PostJpaRepository) : PostServi
         return PostDetailResponseDto(post.id, post.title, post.content, post.authorName, post.createdAt)
     }
 
-    override fun deleteById(id: Long) {
+    override fun deleteById(id: Long): String?{
         postRepository.deleteById(id)
+
+        return "success"
     }
 }
