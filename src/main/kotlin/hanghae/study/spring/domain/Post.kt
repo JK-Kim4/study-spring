@@ -19,7 +19,7 @@ class Post (
     var content: String,
 
     @Column(length = 16)
-    val password: String,
+    var password: String,
 
     @Column(length = 20)
     var authorName: String,

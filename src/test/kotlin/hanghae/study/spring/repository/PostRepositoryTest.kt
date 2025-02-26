@@ -1,5 +1,6 @@
 package hanghae.study.spring.repository
 
+import hanghae.study.spring.domain.Member
 import hanghae.study.spring.domain.Post
 import org.assertj.core.api.Assertions
 import org.springframework.beans.factory.annotation.Autowired
@@ -26,4 +27,5 @@ class PostRepositoryTest {
         Assertions.assertThat(post.id).isNotNull()
         Assertions.assertThat(post.id).isEqualTo(savePost?.id!!)
     }
+
 }

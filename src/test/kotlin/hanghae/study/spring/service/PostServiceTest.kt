@@ -32,7 +32,7 @@ class PostServiceTest {
         val postSaveDto = PostSaveDto(title, content, password, authorName)
         val savedPost = postService.save(postSaveDto)
 
-        Assertions.assertThat(title).isEqualTo(savedPost.title)
+        Assertions.assertThat(title).isEqualTo(savedPost!!.title)
     }
 
     @Test
@@ -43,13 +43,12 @@ class PostServiceTest {
         val authorName = "test author"
 
         val postSaveDto = PostSaveDto(title, content, password, authorName)
-        val postId = postService.save(postSaveDto).id;
+        val postId = postService.save(postSaveDto)!!.id;
         val post = postId?.let { postService.findPostById(it) }
 
-        Assertions.assertThat(post?.title).isEqualTo(title)
-        Assertions.assertThat(post?.content).isEqualTo(content)
-        Assertions.assertThat(post?.password).isEqualTo(password)
-        Assertions.assertThat(post?.authorName).isEqualTo(authorName)
+        Assertions.assertThat(post!!.title).isEqualTo(title)
+        Assertions.assertThat(post!!.content).isEqualTo(content)
+        Assertions.assertThat(post!!.authorName).isEqualTo(authorName)
     }
 
     @Test
@@ -104,7 +103,7 @@ class PostServiceTest {
         val postUpdateDot = PostUpdateDto(title = "update title", content = "update content",
             password = password, authorName = "update author")
 
-        val updatePost = savePost.id?.let { postService.update(it, postUpdateDot) }
+        val updatePost = savePost!!.id?.let { postService.update(it, postUpdateDot) }
 
         Assertions.assertThat(updatePost?.title).isNotEqualTo(post1.title)
         Assertions.assertThat(updatePost?.title).isEqualTo(postUpdateDot.title)
@@ -124,7 +123,7 @@ class PostServiceTest {
             password = wrongPassword, authorName = "update author")
 
         org.junit.jupiter.api.Assertions.assertThrows(NoSuchElementException::class.java){
-            savePost.id?.let { postService.update(it, postUpdateDot) }
+            savePost!!.id?.let { postService.update(it, postUpdateDot) }
         }
     }
 
@@ -134,7 +133,7 @@ class PostServiceTest {
             password = "1234", authorName = "test author1")
         val savePost = postService.save(post1)
 
-        val savedPostId = savePost.id
+        val savedPostId = savePost!!.id
         savedPostId?.let { postService.deleteById(it) }
 
         org.junit.jupiter.api.Assertions.assertThrows(NoSuchElementException::class.java){

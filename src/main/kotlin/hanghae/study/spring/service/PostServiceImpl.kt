@@ -7,8 +7,10 @@ import hanghae.study.spring.api.dto.PostUpdateDto
 import hanghae.study.spring.repository.PostJpaRepository
 import lombok.RequiredArgsConstructor
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 class PostServiceImpl(private val postRepository: PostJpaRepository) : PostService {
 
