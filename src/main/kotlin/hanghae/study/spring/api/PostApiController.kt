@@ -6,6 +6,7 @@ import hanghae.study.spring.api.dto.PostSaveDto
 import hanghae.study.spring.api.dto.PostUpdateDto
 import hanghae.study.spring.api.spec.PostApiSpec
 import hanghae.study.spring.service.PostService
+import jakarta.validation.Valid
 import lombok.RequiredArgsConstructor
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Controller
@@ -28,7 +29,7 @@ class PostApiController(private val postService: PostService) : PostApiSpec {
     }
 
     @PostMapping
-    override fun save(postSaveDto: PostSaveDto): ResponseEntity<PostDetailResponseDto> {
+    override fun save(@RequestBody @Valid postSaveDto: PostSaveDto): ResponseEntity<PostDetailResponseDto> {
         return ResponseEntity.ok(postService.save(postSaveDto))
     }
 
