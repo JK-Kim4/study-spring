@@ -7,17 +7,22 @@ import hanghae.study.spring.api.dto.MemberSigninDto
 import hanghae.study.spring.common.exception.MemberNameDuplicateException
 import hanghae.study.spring.common.exception.MemberNotFoundException
 import hanghae.study.spring.common.exception.MemberSigninFailException
+import hanghae.study.spring.common.jwt.JwtUtil
 import hanghae.study.spring.domain.Member
 import hanghae.study.spring.repository.MemberRepository
+import jakarta.servlet.http.HttpServletResponse
 import lombok.RequiredArgsConstructor
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.time.LocalDateTime
 
 @Service
 @Transactional
 @RequiredArgsConstructor
-class MemberServiceImpl(private val memberRepository: MemberRepository) : MemberService {
+class MemberServiceImpl(
+    private val memberRepository: MemberRepository,
+    private val jwtUtil: JwtUtil) : MemberService {
 
     private val logger = LoggerFactory.getLogger(this.javaClass)
 
@@ -30,14 +35,16 @@ class MemberServiceImpl(private val memberRepository: MemberRepository) : Member
         return memberRepository.save(memberSaveDto.toMember())
     }
 
-    override fun signin(memberSignInDto: MemberSigninDto): JwtResponseDto {
+    override fun signin(memberSignInDto: MemberSigninDto, response: HttpServletResponse): JwtResponseDto {
         val member : Member = memberRepository.findByName(memberSignInDto.name)
             .orElseThrow { MemberNotFoundException("등록되지 않은 사용자입니다.") }
 
         if(member.password == memberSignInDto.password) {
             logger.info("login success!!")
-            TODO("[#4] 로그인 성공 시 JWT를 생성하고 반환합니다.")
 
+            response.addHeader(jwtUtil.AUTHORIZATION_HEADER,
+                member.role?.let { jwtUtil.createToken(member.name, it) })
+            return JwtResponseDto("success", LocalDateTime.now())
         }
         throw MemberSigninFailException("로그인 정보가 올바르지않습니다.");
     }

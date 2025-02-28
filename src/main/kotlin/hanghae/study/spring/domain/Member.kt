@@ -14,6 +14,9 @@ class Member(
     @Column(length = 32)
     val password: String,
 
+    @Enumerated(EnumType.STRING)
+    val role: Role? = Role.CLIENT,
+
     @OneToMany(mappedBy = "member", cascade = [(CascadeType.ALL)])
     val posts: MutableSet<Post> = mutableSetOf(),
 

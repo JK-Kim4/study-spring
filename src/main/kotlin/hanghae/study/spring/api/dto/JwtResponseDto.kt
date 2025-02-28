@@ -1,5 +1,8 @@
 package hanghae.study.spring.api.dto
 
-class JwtResponseDto {
+import java.time.LocalDateTime
 
-}
+class JwtResponseDto(
+    val status: String,
+    val tokenIssuedAt: LocalDateTime,
+)

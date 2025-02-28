@@ -5,6 +5,7 @@ import io.jsonwebtoken.*
 import io.jsonwebtoken.security.Keys
 import jakarta.annotation.PostConstruct
 import jakarta.servlet.http.HttpServletRequest
+import lombok.Getter
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
@@ -14,6 +15,7 @@ import java.util.*
 
 
 @Component
+@Getter
 class JwtUtil(
     // Header KEY 값
     val AUTHORIZATION_HEADER: String = "Authorization",
