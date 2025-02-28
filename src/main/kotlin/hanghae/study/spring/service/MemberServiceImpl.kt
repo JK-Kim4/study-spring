@@ -1,10 +1,12 @@
 package hanghae.study.spring.service
 
 
+import hanghae.study.spring.api.dto.JwtResponseDto
 import hanghae.study.spring.api.dto.MemberSaveDto
 import hanghae.study.spring.api.dto.MemberSigninDto
 import hanghae.study.spring.common.exception.MemberNameDuplicateException
 import hanghae.study.spring.common.exception.MemberNotFoundException
+import hanghae.study.spring.common.exception.MemberSigninFailException
 import hanghae.study.spring.domain.Member
 import hanghae.study.spring.repository.MemberRepository
 import lombok.RequiredArgsConstructor
@@ -28,16 +30,15 @@ class MemberServiceImpl(private val memberRepository: MemberRepository) : Member
         return memberRepository.save(memberSaveDto.toMember())
     }
 
-    override fun signin(memberSignInDto: MemberSigninDto): Boolean? {
+    override fun signin(memberSignInDto: MemberSigninDto): JwtResponseDto {
         val member : Member = memberRepository.findByName(memberSignInDto.name)
             .orElseThrow { MemberNotFoundException("등록되지 않은 사용자입니다.") }
 
         if(member.password == memberSignInDto.password) {
             logger.info("login success!!")
             TODO("[#4] 로그인 성공 시 JWT를 생성하고 반환합니다.")
-            return true
-        }
 
-        return false
+        }
+        throw MemberSigninFailException("로그인 정보가 올바르지않습니다.");
     }
 }
