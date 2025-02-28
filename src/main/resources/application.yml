@@ -26,3 +26,8 @@ server:
     include-message: always
     include-binding-errors: always
     include-stacktrace: always
+
+
+jwt:
+  secret:
+    key: "7ZWt7ZW0OTntmZTsnbTtjIXtlZzqta3snYTrhIjrqLjshLjqs4TroZzrgpjslYTqsIDsnpDtm4zrpa3tlZzqsJzrsJzsnpDrpbzrp4zrk6TslrTqsIDsnpA="
