@@ -52,14 +52,13 @@ class JwtUtil(
     fun createToken(userName: String, role: Role): String {
         val date = Date()
 
-        return BEARER_PREFIX +
-                Jwts.builder()
-                    .setSubject(userName)
-                    .claim(AUTHORIZATION_KEY, role)
-                    .setExpiration(Date(date.time+ TOKEN_TIME))
-                    .setIssuedAt(date)
-                    .signWith(key, signatureAlgorithm)
-                    .compact()
+        return Jwts.builder()
+            .claim(AUTHORIZATION_KEY, role)
+            .setSubject(userName)
+             .setExpiration(Date(date.time+ TOKEN_TIME))
+             .setIssuedAt(date)
+             .signWith(key, signatureAlgorithm)
+            .compact();
     }
 
     fun validateToken(token: String): Boolean {

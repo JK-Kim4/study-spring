@@ -24,7 +24,8 @@ class MemberApiController (private val memberService: MemberService) : MemberApi
     }
 
     @PostMapping("/signin")
-    override fun signin(memberSigninDto: MemberSigninDto,
+    override fun signin(
+        @RequestBody memberSigninDto: MemberSigninDto,
                         httpServletResponse: HttpServletResponse
     ): ResponseEntity<JwtResponseDto> {
         return ResponseEntity.ok( memberService.signin(memberSigninDto, httpServletResponse))
