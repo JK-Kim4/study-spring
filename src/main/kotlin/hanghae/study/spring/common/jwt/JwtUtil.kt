@@ -1,5 +1,6 @@
 package hanghae.study.spring.common.jwt
 
+import hanghae.study.spring.common.exception.TokenException
 import hanghae.study.spring.domain.Role
 import io.jsonwebtoken.*
 import io.jsonwebtoken.security.Keys
@@ -52,7 +53,7 @@ class JwtUtil(
     fun createToken(userName: String, role: Role): String {
         val date = Date()
 
-        return Jwts.builder()
+        return BEARER_PREFIX + " " + Jwts.builder()
             .claim(AUTHORIZATION_KEY, role)
             .setSubject(userName)
              .setExpiration(Date(date.time+ TOKEN_TIME))
@@ -61,22 +62,27 @@ class JwtUtil(
             .compact();
     }
 
-    fun validateToken(token: String): Boolean {
+    fun validateToken(token: String) {
         try {
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token)
-            return true
         } catch (e: SecurityException) {
             log.info("Invalid JWT signature, 유효하지 않는 JWT 서명 입니다.")
+            throw TokenException("Invalid JWT signature, 유효하지 않는 JWT 서명 입니다.")
         } catch (e: MalformedJwtException) {
             log.info("Invalid JWT signature, 유효하지 않는 JWT 서명 입니다.")
+            throw TokenException("Invalid JWT signature, 유효하지 않는 JWT 서명 입니다.")
         } catch (e: ExpiredJwtException) {
             log.info("Expired JWT token, 만료된 JWT token 입니다.")
+            throw TokenException("Expired JWT token, 만료된 JWT token 입니다.")
         } catch (e: UnsupportedJwtException) {
             log.info("Unsupported JWT token, 지원되지 않는 JWT 토큰 입니다.")
+            throw TokenException("Unsupported JWT token, 지원되지 않는 JWT 토큰 입니다.")
         } catch (e: IllegalArgumentException) {
             log.info("JWT claims is empty, 잘못된 JWT 토큰 입니다.")
+            throw TokenException("JWT claims is empty, 잘못된 JWT 토큰 입니다.")
+        } catch (e: SignatureException) {
+            throw TokenException("JWT signature does not match locally computed signature.")
         }
-        return false
     }
 
     //Token 포함 사용자 정보 추출

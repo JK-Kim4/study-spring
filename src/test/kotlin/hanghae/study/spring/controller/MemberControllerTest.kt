@@ -32,6 +32,8 @@ class MemberControllerTest {
     @Autowired
     private lateinit var objectMapper: ObjectMapper
 
+    val BEARER_PREFIX: String = "Bearer"
+
     @Test
     fun signup_test(){
         val name = "testmember"
@@ -70,7 +72,8 @@ class MemberControllerTest {
         val token = resultActions.andReturn().response.getHeader("Authorization")
 
         if (token != null) {
-            println("valid result = " + jwtUtil.validateToken(token) )
+            jwtUtil.validateToken(token.substring(BEARER_PREFIX.length + 1)).toString()
+            println("valid result = pass")
         }
 
 
