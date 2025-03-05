@@ -6,6 +6,7 @@ import hanghae.study.spring.api.dto.MemberSigninDto
 import hanghae.study.spring.api.spec.MemberApiSpec
 import hanghae.study.spring.service.MemberService
 import jakarta.servlet.http.HttpServletResponse
+import jakarta.validation.Valid
 import lombok.RequiredArgsConstructor
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Controller
@@ -19,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 class MemberApiController (private val memberService: MemberService) : MemberApiSpec{
 
     @PostMapping("/signup")
-    override fun signup(@RequestBody memberSaveDto: MemberSaveDto): ResponseEntity<String> {
+    override fun signup(@RequestBody @Valid memberSaveDto: MemberSaveDto): ResponseEntity<String> {
         return ResponseEntity.ok( memberService.signup(memberSaveDto)?.let { "success" })
     }
 
