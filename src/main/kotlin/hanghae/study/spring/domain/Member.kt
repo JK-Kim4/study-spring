@@ -1,5 +1,6 @@
 package hanghae.study.spring.domain
 
+import com.fasterxml.jackson.annotation.JsonManagedReference
 import jakarta.persistence.*
 
 @Entity
@@ -17,6 +18,7 @@ class Member(
     @Enumerated(EnumType.STRING)
     val role: Role? = Role.CLIENT,
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "member", cascade = [(CascadeType.ALL)])
     val posts: MutableSet<Post> = mutableSetOf(),
 
