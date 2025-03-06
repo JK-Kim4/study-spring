@@ -6,6 +6,7 @@ import hanghae.study.spring.api.dto.PostSaveDto
 import hanghae.study.spring.api.dto.PostUpdateDto
 import hanghae.study.spring.api.spec.PostApiSpec
 import hanghae.study.spring.service.PostService
+import jakarta.servlet.http.HttpServletRequest
 import jakarta.validation.Valid
 import lombok.RequiredArgsConstructor
 import org.springframework.http.ResponseEntity
@@ -29,17 +30,20 @@ class PostApiController(private val postService: PostService) : PostApiSpec {
     }
 
     @PostMapping
-    override fun save(@RequestBody @Valid postSaveDto: PostSaveDto): ResponseEntity<PostDetailResponseDto> {
-        return ResponseEntity.ok(postService.save(postSaveDto))
+    override fun save(@RequestBody @Valid postSaveDto: PostSaveDto,
+                      httpServletRequest: HttpServletRequest): ResponseEntity<PostDetailResponseDto> {
+        return ResponseEntity.ok(postService.save(postSaveDto, httpServletRequest))
     }
 
     @PutMapping("/{id}")
-    override fun update(@PathVariable("id") id: Long, postUpdateDto: PostUpdateDto): ResponseEntity<PostDetailResponseDto> {
-        return ResponseEntity.ok(postService.update(id, postUpdateDto))
+    override fun update(@PathVariable("id") id: Long, postUpdateDto: PostUpdateDto,
+                        httpServletRequest: HttpServletRequest): ResponseEntity<PostDetailResponseDto> {
+        return ResponseEntity.ok(postService.update(id, postUpdateDto, httpServletRequest))
     }
 
     @DeleteMapping("/{id}")
-    override fun delete(@PathVariable("id") id: Long): ResponseEntity<Any?> {
-        return ResponseEntity.ok(postService.deleteById(id))
+    override fun delete(@PathVariable("id") id: Long,
+                        httpServletRequest: HttpServletRequest): ResponseEntity<Any?> {
+        return ResponseEntity.ok(postService.deleteById(id, httpServletRequest))
     }
 }

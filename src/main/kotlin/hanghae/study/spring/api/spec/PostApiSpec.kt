@@ -7,6 +7,7 @@ import hanghae.study.spring.api.dto.PostUpdateDto
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import io.swagger.v3.oas.annotations.tags.Tag
+import jakarta.servlet.http.HttpServletRequest
 import org.springframework.http.ResponseEntity
 
 @Tag(name = "게시글 API", description = "게시글 관리 API")
@@ -28,18 +29,21 @@ interface PostApiSpec {
                 description =   "- 제목, 작성자명, 비밀번호, 작성 내용을 저장하고\n" +
                                 "- 저장된 게시글을 Client 로 반환하기",
                 security = [SecurityRequirement(name = "Authorization")],)
-    fun save(postSaveDto: PostSaveDto): ResponseEntity<PostDetailResponseDto>
+    fun save(postSaveDto: PostSaveDto,
+             httpServletRequest: HttpServletRequest): ResponseEntity<PostDetailResponseDto>
 
     @Operation( summary =       "선택한 게시글 수정 API", method = "PUT",
                 description =   "- 수정을 요청할 때 수정할 데이터와 비밀번호를 같이 보내서 서버에서 비밀번호 일치 여부를 확인 한 후\n" +
                                 "- 제목, 작성자명, 작성 내용을 수정하고 수정된 게시글을 Client 로 반환하기",
                 security = [SecurityRequirement(name = "Authorization")],)
-    fun update(id: Long, postUpdateDto: PostUpdateDto): ResponseEntity<PostDetailResponseDto>
+    fun update(id: Long, postUpdateDto: PostUpdateDto,
+               httpServletRequest: HttpServletRequest): ResponseEntity<PostDetailResponseDto>
 
     @Operation( summary =       "선택한 게시글 삭제 API", method = "DELETE",
                 description =   "- 삭제를 요청할 때 비밀번호를 같이 보내서 서버에서 비밀번호 일치 여부를 확인 한 후\n" +
                                 "- 선택한 게시글을 삭제하고 Client 로 성공했다는 표시 반환하기",
                 security = [SecurityRequirement(name = "Authorization")],)
-    fun delete(id: Long): ResponseEntity<Any?>
+    fun delete(id: Long,
+               httpServletRequest: HttpServletRequest): ResponseEntity<Any?>
 
 }

@@ -9,7 +9,7 @@ import hanghae.study.spring.common.exception.MemberNotFoundException
 import hanghae.study.spring.common.exception.MemberSigninFailException
 import hanghae.study.spring.common.jwt.JwtUtil
 import hanghae.study.spring.domain.Member
-import hanghae.study.spring.repository.MemberRepository
+import hanghae.study.spring.repository.MemberJpaRepository
 import jakarta.servlet.http.HttpServletResponse
 import lombok.RequiredArgsConstructor
 import org.slf4j.LoggerFactory
@@ -21,22 +21,22 @@ import java.time.LocalDateTime
 @Transactional
 @RequiredArgsConstructor
 class MemberServiceImpl(
-    private val memberRepository: MemberRepository,
+    private val memberJpaRepository: MemberJpaRepository,
     private val jwtUtil: JwtUtil) : MemberService {
 
     private val logger = LoggerFactory.getLogger(this.javaClass)
 
     override fun signup(memberSaveDto: MemberSaveDto): Member? {
 
-        if(memberRepository.findByName(memberSaveDto.name).isPresent) {
+        if(memberJpaRepository.findByName(memberSaveDto.name).isPresent) {
             throw MemberNameDuplicateException("이미 사용중인 계정(이름)입니다.")
         }
 
-        return memberRepository.save(memberSaveDto.toMember())
+        return memberJpaRepository.save(memberSaveDto.toMember())
     }
 
     override fun signin(memberSignInDto: MemberSigninDto, response: HttpServletResponse): JwtResponseDto {
-        val member : Member = memberRepository.findByName(memberSignInDto.name)
+        val member : Member = memberJpaRepository.findByName(memberSignInDto.name)
             .orElseThrow { MemberNotFoundException("등록되지 않은 사용자입니다.") }
 
         if(member.password == memberSignInDto.password) {
