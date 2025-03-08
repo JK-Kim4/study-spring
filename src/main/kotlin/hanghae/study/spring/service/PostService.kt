@@ -4,6 +4,7 @@ import hanghae.study.spring.api.dto.PostDetailResponseDto
 import hanghae.study.spring.api.dto.PostListResponseDto
 import hanghae.study.spring.api.dto.PostSaveDto
 import hanghae.study.spring.api.dto.PostUpdateDto
+import jakarta.servlet.http.HttpServletRequest
 
 
 interface PostService {
@@ -14,10 +15,10 @@ interface PostService {
 
     fun findPostById(id: Long): PostDetailResponseDto?
 
-    fun save(postSaveDto: PostSaveDto): PostDetailResponseDto?
+    fun save(postSaveDto: PostSaveDto, httpServletRequest: HttpServletRequest): PostDetailResponseDto?
 
-    fun update(id: Long, postUpdateDto: PostUpdateDto): PostDetailResponseDto?
+    fun update(id: Long, postUpdateDto: PostUpdateDto, httpServletRequest: HttpServletRequest): PostDetailResponseDto?
 
-    fun deleteById(id: Long): String?
+    fun deleteById(id: Long, httpServletRequest: HttpServletRequest): String?
 
 }

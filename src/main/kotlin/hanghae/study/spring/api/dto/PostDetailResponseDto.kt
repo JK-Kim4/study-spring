@@ -10,15 +10,15 @@ class PostDetailResponseDto(
     val id: Long?,
     val title: String?,
     val content: String?,
-    val authorName: String?,
+    val memberId: Long?,
     val createdAt: LocalDateTime?,
 ) {
-    fun fromEntity(entity: Post): PostDetailResponseDto? {
+    fun fromEntity(entity: Post): PostDetailResponseDto {
         return PostDetailResponseDto(
             id = entity.id,
             title = entity.title,
             content = entity.content,
-            authorName = entity.authorName,
+            memberId = entity.member!!.id,
             createdAt = entity.createdAt,
         )
     }
