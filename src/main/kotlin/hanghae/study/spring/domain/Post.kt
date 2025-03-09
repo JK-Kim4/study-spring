@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference
 import hanghae.study.spring.api.dto.PostUpdateDto
 import jakarta.persistence.*
 import lombok.ToString
+import org.hibernate.annotations.BatchSize
 
 @Entity
 @ToString
@@ -19,28 +20,21 @@ class Post (
     @Column(columnDefinition = "TEXT")
     var content: String,
 
-    @Column(length = 16)
-    var password: String,
-
-    @Column(length = 20)
-    var authorName: String,
-
     @ManyToOne(fetch = FetchType.LAZY, cascade = [CascadeType.DETACH])
     @JsonManagedReference
     @JoinColumn(name = "member_id")
-    val member: Member? = null,
+    var member: Member? = null,
 
+    @BatchSize(size = 100)
     @JsonManagedReference
     @OneToMany(mappedBy = "post", cascade = [CascadeType.ALL])
-    var comments : MutableSet<Post> = mutableSetOf(),
-
+    var comments : MutableList<Comment>? = mutableListOf(),
 
     ): BaseTimeEntity() {
 
     fun update(postUpdateDto: PostUpdateDto) {
         this.title = postUpdateDto.title
         this.content = postUpdateDto.content
-        this.authorName = postUpdateDto.authorName
     }
 
 }

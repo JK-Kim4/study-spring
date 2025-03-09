@@ -17,14 +17,13 @@ class PostSaveDto (
 
     val content: String,
 
-    @field:NotBlank
-    @field:Size(min = 4, max = 16)
-    val password: String,
-
-    val authorName: String,
+//    @field:NotBlank
+//    @field:Size(min = 4, max = 16)
+//    val password: String,
+//
+//    val authorName: String,
 ) {
 
     fun toPost(): Post = Post(
-        title = title, content = content,
-        password = password, authorName = authorName)
+        title = title, content = content)
 }

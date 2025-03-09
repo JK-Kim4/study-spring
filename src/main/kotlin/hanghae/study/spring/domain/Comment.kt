@@ -3,7 +3,6 @@ package hanghae.study.spring.domain
 import com.fasterxml.jackson.annotation.JsonBackReference
 import jakarta.persistence.*
 import lombok.ToString
-import org.hibernate.annotations.BatchSize
 
 @Entity
 @ToString
@@ -12,16 +11,14 @@ class Comment(
     @Column(name= "comment_id")
     val id: Long? = null,
 
-    @BatchSize(size = 100)
     @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "post_id")
+    @JoinColumn(name = "post_id", nullable = false)
     val post: Post,
 
-    @BatchSize(size = 100)
     @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
+    @JoinColumn(name = "member_id", nullable = false)
     val member: Member,
 
     @Column(length = 32)

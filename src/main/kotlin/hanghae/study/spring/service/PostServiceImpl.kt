@@ -26,7 +26,7 @@ class PostServiceImpl(
         val postList = postRepository.findAll()
 
         return postList
-            .map { PostListResponseDto(it.id, it.title, it.content, it.authorName, it.createdAt) }
+            .map { PostListResponseDto(it.id, it.title, it.content, it.createdAt) }
             .toList()
     }
 
@@ -34,7 +34,7 @@ class PostServiceImpl(
         val postList = postRepository.findByOrderByIdDesc()
 
         return postList
-            .map { PostListResponseDto(it.id, it.title, it.content, it.authorName, it.createdAt) }
+            .map { PostListResponseDto(it.id, it.title, it.content, it.createdAt) }
             .toList()
     }
 

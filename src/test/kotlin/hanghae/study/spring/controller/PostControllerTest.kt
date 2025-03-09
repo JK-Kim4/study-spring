@@ -29,7 +29,7 @@ class PostControllerTest {
         val password = "11"
         val authorName = "test author"
 
-        val postSaveDto = PostSaveDto(title, content, password, authorName)
+        val postSaveDto = PostSaveDto(title, content)
         val requestJson = objectMapper.writeValueAsString(postSaveDto)
 
         val resultActions = mvc.perform(
@@ -47,7 +47,7 @@ class PostControllerTest {
         val password = "113433"
         val authorName = "test author"
 
-        val postSaveDto = PostSaveDto(title=title, content=content, password=password, authorName = authorName)
+        val postSaveDto = PostSaveDto(title=title, content=content)
         val requestJson = objectMapper.writeValueAsString(postSaveDto)
 
         val resultActions = mvc.perform(

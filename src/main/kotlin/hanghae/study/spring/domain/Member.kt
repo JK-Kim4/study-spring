@@ -20,7 +20,7 @@ class Member(
 
     @JsonManagedReference
     @OneToMany(mappedBy = "member", cascade = [(CascadeType.ALL)])
-    val posts: MutableSet<Post> = mutableSetOf(),
+    var posts: MutableSet<Post> = mutableSetOf(),
 
     ): BaseTimeEntity() {}
 

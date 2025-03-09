@@ -10,7 +10,7 @@ class PostListResponseDto(
     val id: Long?,
     val title: String?,
     val content: String?,
-    val authorName: String?,
+    //val authorName: String?,
     val createdAt: LocalDateTime?,
 ) {
     fun fromEntity(entity: Post): PostListResponseDto? {
@@ -18,7 +18,7 @@ class PostListResponseDto(
             id = entity.id,
             title = entity.title,
             content = entity.content,
-            authorName = entity.authorName,
+            //authorName = entity.authorName,
             createdAt = entity.createdAt,
         )
     }

@@ -1,6 +1,5 @@
 package hanghae.study.spring.repository
 
-import hanghae.study.spring.domain.Member
 import hanghae.study.spring.domain.Post
 import org.assertj.core.api.Assertions
 import org.springframework.beans.factory.annotation.Autowired
@@ -17,9 +16,7 @@ class PostRepositoryTest {
     fun save() {
         val title = "test title"
         val content = "test content"
-        val password = "test password"
-        val authorName = "test author"
-        val post = Post(title = title, content= content, password= password, authorName= authorName)
+        val post = Post(title = title, content= content)
 
 
         val savePost = postJpaRepository?.save(post)

@@ -12,11 +12,10 @@ class PostTest {
         val authorName = "test author"
         val password = "test password"
 
-        val post = Post(title = title, content = content, password = password, authorName = authorName)
+        val post = Post(title = title, content = content)
 
         assertThat(post.title).isEqualTo(title)
         assertThat(post.content).isEqualTo(content)
-        assertThat(post.password).isEqualTo(password)
         assertThat(post.id).isNull()
     }
 
