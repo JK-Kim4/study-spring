@@ -14,6 +14,6 @@ interface CommentService {
 
     fun deleteById(id: Long, httpServletRequest: HttpServletRequest) : String
 
-    fun findCommentListByToken(httpServletRequest: HttpServletRequest) : CommentDetailResponseDto
+    fun findCommentListByMember(member : Member) : CommentDetailResponseDto
 
 }

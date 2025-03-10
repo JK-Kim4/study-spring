@@ -28,8 +28,8 @@ class CommentServiceImpl(
     private val jwtUtil: JwtUtil
 ) : CommentService {
 
-    override fun findCommentListByToken(httpServletRequest: HttpServletRequest) : CommentDetailResponseDto {
-        val comment = commentJpaRepository.findByMember(getMemberFromToken(httpServletRequest)).orElseThrow()
+    override fun findCommentListByMember(member: Member) : CommentDetailResponseDto {
+        val comment = commentJpaRepository.findByMember(member).orElseThrow()
 
         return CommentDetailResponseDto(
             id = comment.id, content = comment.content,
@@ -92,11 +92,5 @@ class CommentServiceImpl(
         val tokenMemberName = jwtUtil.getUserInfoFromToken(jwtUtil.resolveToken(httpServletRequest)).subject
 
         return member.name == tokenMemberName!!
-    }
-
-    private fun getMemberFromToken(httpServletRequest: HttpServletRequest): Member {
-        val tokenMemberName = jwtUtil.getUserInfoFromToken(jwtUtil.resolveToken(httpServletRequest)).subject
-
-        return memberJpaRepository.findByName(tokenMemberName).orElseThrow()
     }
 }
