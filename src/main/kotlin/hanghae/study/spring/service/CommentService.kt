@@ -8,11 +8,11 @@ import jakarta.servlet.http.HttpServletRequest
 
 interface CommentService {
 
-    fun save(commentSaveDto: CommentSaveDto, member: Member) : CommentDetailResponseDto
+    fun save(commentSaveDto: CommentSaveDto, member : Member) : CommentDetailResponseDto
 
-    fun update(id : Long, commentUpdateDto: CommentUpdateDto, httpServletRequest: HttpServletRequest) : CommentDetailResponseDto
+    fun update(id : Long, commentUpdateDto: CommentUpdateDto, member : Member) : CommentDetailResponseDto
 
-    fun deleteById(id: Long, httpServletRequest: HttpServletRequest) : String
+    fun deleteById(id: Long, member : Member) : String
 
     fun findCommentListByMember(member : Member) : CommentDetailResponseDto
 

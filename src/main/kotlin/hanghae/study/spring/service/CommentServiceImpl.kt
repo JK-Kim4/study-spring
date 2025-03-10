@@ -38,23 +38,24 @@ class CommentServiceImpl(
     }
 
     @Transactional(readOnly = false)
-    override fun deleteById(id: Long, httpServletRequest: HttpServletRequest) : String {
-        if(tokenMemberValidation(id, httpServletRequest)) {
-            commentJpaRepository.deleteById(id)
+    override fun deleteById(id: Long, member: Member) : String {
+        val comment = commentJpaRepository.findByMember(member).orElseThrow()
+
+        if(tokenMemberValidation(id, member)) {
+            commentJpaRepository.delete(comment)
             return "success"
         }
 
-        throw MemberInvalidateException();
+        throw MemberInvalidateException()
     }
 
     @Transactional(readOnly = false)
     override fun update(id : Long,
                         commentUpdateDto : CommentUpdateDto,
-                        httpServletRequest: HttpServletRequest): CommentDetailResponseDto {
-
+                        member : Member): CommentDetailResponseDto {
         val comment = commentJpaRepository.findById(id).orElseThrow()
 
-        if(tokenMemberValidation(id, httpServletRequest)){
+        if(tokenMemberValidation(id, member)){
             comment.update(commentUpdateDto)
 
             return CommentDetailResponseDto(
@@ -79,8 +80,8 @@ class CommentServiceImpl(
             memberName = comment.member.name, createdAt = comment.createdAt)
     }
 
-    private fun tokenMemberValidation(commentId: Long, httpServletRequest: HttpServletRequest): Boolean {
-        val member = commentJpaRepository.findById(commentId)
+    private fun tokenMemberValidation(commentId: Long, member: Member) : Boolean {
+        val commentMember = commentJpaRepository.findById(commentId)
             .orElseThrow().member
 
         if(member.role == Role.ADMIN){
@@ -89,8 +90,6 @@ class CommentServiceImpl(
             return true;
         }
 
-        val tokenMemberName = jwtUtil.getUserInfoFromToken(jwtUtil.resolveToken(httpServletRequest)).subject
-
-        return member.name == tokenMemberName!!
+        return commentMember == member
     }
 }
