@@ -26,6 +26,10 @@ class MemberServiceImpl(
 
     private val logger = LoggerFactory.getLogger(this.javaClass)
 
+    override fun findByName(name: String): Member {
+        return memberJpaRepository.findByName(name).orElseThrow()
+    }
+
     @Transactional(readOnly = false)
     override fun signup(memberSaveDto: MemberSaveDto): Member? {
 

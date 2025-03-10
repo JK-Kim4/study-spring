@@ -6,7 +6,6 @@ import hanghae.study.spring.domain.Member
 import hanghae.study.spring.domain.Post
 import hanghae.study.spring.repository.MemberJpaRepository
 import hanghae.study.spring.repository.PostJpaRepository
-import jakarta.servlet.http.HttpServletRequest
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -23,9 +22,6 @@ class CommentServiceTest {
 
     @Autowired
     lateinit var memberJpaRepository: MemberJpaRepository
-
-    @Autowired
-    lateinit var httpServletRequest: HttpServletRequest
 
     @Autowired
     lateinit var jwtUtil: JwtUtil

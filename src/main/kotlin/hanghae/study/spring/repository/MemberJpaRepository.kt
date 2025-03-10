@@ -7,5 +7,6 @@ import java.util.*
 interface MemberJpaRepository : JpaRepository<Member, Long> {
 
     fun findByName(name: String): Optional<Member>
+    fun id(id: Long): MutableList<Member>
 
 }

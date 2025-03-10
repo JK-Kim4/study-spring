@@ -12,6 +12,7 @@ class PostListResponseDto(
     val content: String?,
     //val authorName: String?,
     val createdAt: LocalDateTime?,
+    val commentCount: Int?,
 ) {
     fun fromEntity(entity: Post): PostListResponseDto? {
         return PostListResponseDto(
@@ -19,6 +20,7 @@ class PostListResponseDto(
             title = entity.title,
             content = entity.content,
             //authorName = entity.authorName,
+            commentCount = entity.comments?.size,
             createdAt = entity.createdAt,
         )
     }

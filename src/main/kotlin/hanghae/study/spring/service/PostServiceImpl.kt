@@ -1,9 +1,6 @@
 package hanghae.study.spring.service
 
-import hanghae.study.spring.api.dto.PostDetailResponseDto
-import hanghae.study.spring.api.dto.PostListResponseDto
-import hanghae.study.spring.api.dto.PostSaveDto
-import hanghae.study.spring.api.dto.PostUpdateDto
+import hanghae.study.spring.api.dto.*
 import hanghae.study.spring.common.exception.MemberInvalidateException
 import hanghae.study.spring.common.jwt.JwtUtil
 import hanghae.study.spring.domain.Member
@@ -28,7 +25,10 @@ class PostServiceImpl(
         val postList = postJpaRepository.findAll()
 
         return postList
-            .map { PostListResponseDto(it.id, it.title, it.content, it.createdAt) }
+            .map { PostListResponseDto(
+                id = it.id, title = it.title,
+                content = it.content, commentCount = it.comments?.size,
+                createdAt = it.createdAt) }
             .toList()
     }
 
@@ -36,35 +36,63 @@ class PostServiceImpl(
         val postList = postJpaRepository.findByOrderByIdDesc()
 
         return postList
-            .map { PostListResponseDto(it.id, it.title, it.content, it.createdAt) }
+            .map { PostListResponseDto(
+                id = it.id, title = it.title,
+                content = it.content, commentCount = it.comments?.size,
+                createdAt = it.createdAt) }
             .toList()
     }
 
-    override fun findPostById(id: Long): PostDetailResponseDto? {
+    override fun findPostById(id: Long): PostDetailResponseDto {
         val post = postJpaRepository.findById(id).orElseThrow()
-        return PostDetailResponseDto(post.id, post.title, post.content, post.member!!.id, post.createdAt)
+        return PostDetailResponseDto(
+            id = post.id!!, title = post.title,
+            content = post.content, memberId = post.member!!.id,
+            comments = post.comments
+                ?.map { comment -> CommentListResponseDto(
+                    commentId = comment.id, postId = comment.post.id,
+                    memberId = comment.member.id, memberName = comment.member.name,
+                    content = comment.content) }?.toList() ?: mutableListOf(),
+            createdAt = post.createdAt)
     }
 
     @Transactional(readOnly = false)
-    override fun save(postSaveDto: PostSaveDto,
-                        httpServletRequest: HttpServletRequest): PostDetailResponseDto? {
+    override fun save(postSaveDto: PostSaveDto, member: Member): PostDetailResponseDto {
         var post = postSaveDto.toPost();
-        post.member = getMemberFromToken(httpServletRequest)
+        post.member = member
+
         post = postJpaRepository.save(post)
 
-        return PostDetailResponseDto(post.id, post.title, post.content, post.member!!.id, post.createdAt)
+        return PostDetailResponseDto(
+            id = post.id!!, title = post.title,
+            content = post.content, memberId = post.member!!.id,
+            comments = post.comments
+                ?.map { comment -> CommentListResponseDto(
+                    commentId = comment.id, postId = comment.post.id,
+                    memberId = comment.member.id, memberName = comment.member.name,
+                    content = comment.content) }?.toList() ?: mutableListOf(),
+            createdAt = post.createdAt)
     }
 
     @Transactional(readOnly = false)
-    override fun update(id: Long, postUpdateDto: PostUpdateDto,
-                        httpServletRequest: HttpServletRequest): PostDetailResponseDto? {
-        if(tokenMemberValidation(id, httpServletRequest)) {
+    override fun update(
+        postId: Long, postUpdateDto: PostUpdateDto,
+        member: Member): PostDetailResponseDto {
+        if(tokenMemberValidation(postId, member)) {
 
             // 2025.03.06 Token Member 인증 방식 변경
             // val post = postRepository.findByIdAndPassword(id, postUpdateDto.password).orElseThrow();
-            val post = postJpaRepository.findById(id).orElseThrow()
+            val post = postJpaRepository.findById(postId).orElseThrow()
             post.update(postUpdateDto)
-            return PostDetailResponseDto(post.id, post.title, post.content, post.member!!.id, post.createdAt)
+            return PostDetailResponseDto(
+                id = post.id!!, title = post.title,
+                content = post.content, memberId = post.member!!.id,
+                comments = post.comments
+                    ?.map { comment -> CommentListResponseDto(
+                        commentId = comment.id, postId = comment.post.id,
+                        memberId = comment.member.id, memberName = comment.member.name,
+                        content = comment.content) }?.toList() ?: mutableListOf(),
+                createdAt = post.createdAt)
         }
 
         throw MemberInvalidateException();
@@ -72,10 +100,10 @@ class PostServiceImpl(
     }
 
     @Transactional(readOnly = false)
-    override fun deleteById(id: Long,
-                            httpServletRequest: HttpServletRequest): String?{
+    override fun deleteById(
+        id: Long, member: Member): String{
 
-        if(tokenMemberValidation(id, httpServletRequest)) {
+        if(tokenMemberValidation(id, member)) {
             postJpaRepository.deleteById(id)
             return "success"
         }
@@ -83,19 +111,17 @@ class PostServiceImpl(
         throw MemberInvalidateException();
     }
 
-    private fun tokenMemberValidation(postId: Long, httpServletRequest: HttpServletRequest): Boolean {
-        val member = postJpaRepository.findById(postId)
+    private fun tokenMemberValidation(postId: Long, member: Member): Boolean {
+        val postAuthor = postJpaRepository.findById(postId)
             .orElseThrow().member
 
-        if(member!!.role == Role.ADMIN){
+        if(postAuthor!!.role == Role.ADMIN){
             //ADMIN의 경우 게시물 수정/삭제 허용
             log.info("ADMIN MEMBER REQUEST [POST-ID] : ${postId}]")
             return true
         }
 
-        val tokenMemberName = jwtUtil.getUserInfoFromToken(jwtUtil.resolveToken(httpServletRequest)).subject
-
-        return member.name == tokenMemberName!!
+        return postAuthor == member
     }
 
     private fun getMemberFromToken(httpServletRequest: HttpServletRequest): Member {

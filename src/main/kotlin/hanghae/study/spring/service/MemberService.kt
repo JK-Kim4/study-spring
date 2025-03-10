@@ -8,6 +8,8 @@ import jakarta.servlet.http.HttpServletResponse
 
 interface MemberService {
 
+    fun findByName(name: String): Member
+
     fun signup(memberSaveDto : MemberSaveDto) : Member?
 
     fun signin(memberSignInDto : MemberSigninDto, response: HttpServletResponse) : JwtResponseDto?

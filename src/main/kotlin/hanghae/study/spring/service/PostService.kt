@@ -4,7 +4,7 @@ import hanghae.study.spring.api.dto.PostDetailResponseDto
 import hanghae.study.spring.api.dto.PostListResponseDto
 import hanghae.study.spring.api.dto.PostSaveDto
 import hanghae.study.spring.api.dto.PostUpdateDto
-import jakarta.servlet.http.HttpServletRequest
+import hanghae.study.spring.domain.Member
 
 
 interface PostService {
@@ -13,12 +13,12 @@ interface PostService {
 
     fun findPostListOrderByIdDesc(): List<PostListResponseDto>
 
-    fun findPostById(id: Long): PostDetailResponseDto?
+    fun findPostById(id: Long): PostDetailResponseDto
 
-    fun save(postSaveDto: PostSaveDto, httpServletRequest: HttpServletRequest): PostDetailResponseDto?
+    fun save(postSaveDto: PostSaveDto, member: Member): PostDetailResponseDto
 
-    fun update(id: Long, postUpdateDto: PostUpdateDto, httpServletRequest: HttpServletRequest): PostDetailResponseDto?
+    fun update(postId: Long, postUpdateDto: PostUpdateDto, member: Member): PostDetailResponseDto
 
-    fun deleteById(id: Long, httpServletRequest: HttpServletRequest): String?
+    fun deleteById(id: Long, member: Member): String
 
 }
