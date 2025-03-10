@@ -7,16 +7,14 @@ import kotlin.test.Test
 
 @SpringBootTest
 class MemberJpaRepositoryTest {
-
-
     @Autowired
-    val memberJpaRepository : MemberJpaRepository? = null
+    lateinit var memberJpaRepository : MemberJpaRepository
 
     @Test
     fun save_member_test(){
         val member = Member(name = "test", password = "test")
 
-        val savedMember = memberJpaRepository!!.save(member);
+        val savedMember = memberJpaRepository.save(member);
 
         Assertions.assertNotNull(savedMember)
         Assertions.assertEquals(member.name, savedMember.name)

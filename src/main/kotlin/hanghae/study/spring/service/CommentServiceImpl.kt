@@ -67,9 +67,8 @@ class CommentServiceImpl(
     }
 
     @Transactional(readOnly = false)
-    override fun save(commentSaveDto: CommentSaveDto, httpServletRequest: HttpServletRequest): CommentDetailResponseDto {
+    override fun save(commentSaveDto: CommentSaveDto, member: Member): CommentDetailResponseDto {
         val post = postJpaRepository.findById(commentSaveDto.postId).orElseThrow()
-        val member = getMemberFromToken(httpServletRequest)
 
         var comment = commentSaveDto.toComment(post = post, member = member)
         comment = commentJpaRepository.save(comment)

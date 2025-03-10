@@ -87,7 +87,7 @@ class PostServiceImpl(
         val member = postJpaRepository.findById(postId)
             .orElseThrow().member
 
-        if(member.role == Role.ADMIN){
+        if(member!!.role == Role.ADMIN){
             //ADMIN의 경우 게시물 수정/삭제 허용
             log.info("ADMIN MEMBER REQUEST [POST-ID] : ${postId}]")
             return true
