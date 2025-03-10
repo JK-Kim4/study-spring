@@ -23,7 +23,7 @@ class Post (
     @ManyToOne(fetch = FetchType.LAZY, cascade = [CascadeType.DETACH])
     @JsonManagedReference
     @JoinColumn(name = "member_id")
-    var member: Member? = null,
+    var member: Member,
 
     @BatchSize(size = 100)
     @JsonManagedReference

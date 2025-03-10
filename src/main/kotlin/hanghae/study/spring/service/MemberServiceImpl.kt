@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDateTime
 
 @Service
-@Transactional
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 class MemberServiceImpl(
     private val memberJpaRepository: MemberJpaRepository,
@@ -26,6 +26,7 @@ class MemberServiceImpl(
 
     private val logger = LoggerFactory.getLogger(this.javaClass)
 
+    @Transactional(readOnly = false)
     override fun signup(memberSaveDto: MemberSaveDto): Member? {
 
         if(memberJpaRepository.findByName(memberSaveDto.name).isPresent) {
