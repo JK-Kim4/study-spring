@@ -95,7 +95,7 @@ class PostServiceImpl(
                 createdAt = post.createdAt)
         }
 
-        throw MemberInvalidateException();
+        throw MemberInvalidateException()
 
     }
 

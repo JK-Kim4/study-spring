@@ -4,13 +4,10 @@ import hanghae.study.spring.api.dto.CommentDetailResponseDto
 import hanghae.study.spring.api.dto.CommentSaveDto
 import hanghae.study.spring.api.dto.CommentUpdateDto
 import hanghae.study.spring.common.exception.MemberInvalidateException
-import hanghae.study.spring.common.jwt.JwtUtil
 import hanghae.study.spring.domain.Member
 import hanghae.study.spring.domain.Role
 import hanghae.study.spring.repository.CommentJpaRepository
-import hanghae.study.spring.repository.MemberJpaRepository
 import hanghae.study.spring.repository.PostJpaRepository
-import jakarta.servlet.http.HttpServletRequest
 import lombok.RequiredArgsConstructor
 import lombok.extern.slf4j.Slf4j
 import org.hibernate.query.sqm.tree.SqmNode.log
@@ -23,9 +20,7 @@ import org.springframework.transaction.annotation.Transactional
 @RequiredArgsConstructor
 class CommentServiceImpl(
     private val commentJpaRepository: CommentJpaRepository,
-    private val postJpaRepository: PostJpaRepository,
-    private val memberJpaRepository: MemberJpaRepository,
-    private val jwtUtil: JwtUtil
+    private val postJpaRepository: PostJpaRepository
 ) : CommentService {
 
     override fun findCommentListByMember(member: Member) : CommentDetailResponseDto {
@@ -46,7 +41,7 @@ class CommentServiceImpl(
             return "success"
         }
 
-        throw MemberInvalidateException()
+        throw MemberInvalidateException("작성자 이외 사용자는 삭제할 수 없습니다.");
     }
 
     @Transactional(readOnly = false)
@@ -64,7 +59,7 @@ class CommentServiceImpl(
                 memberName = comment.member.name, createdAt = comment.createdAt)
         }
 
-        throw MemberInvalidateException()
+        throw MemberInvalidateException("작성자 이외 사용자는 삭제할 수 없습니다.")
     }
 
     @Transactional(readOnly = false)
