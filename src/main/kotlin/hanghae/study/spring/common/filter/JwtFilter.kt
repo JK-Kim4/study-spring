@@ -44,6 +44,10 @@ class JwtFilter(val jwtUtil: JwtUtil) : OncePerRequestFilter() {
         }
     }
 
+    /* TODO
+    *  filter 발생 exception의 경우 Dispathersevlet의 영향을 받지 않음
+    *  자체 Response 생성 필요
+    * */
     private fun resoleTokenFromRequest(request: HttpServletRequest): String {
         logger.info("resolve token to header start")
         val token = jwtUtil.resolveToken(request)
